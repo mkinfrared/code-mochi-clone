@@ -1,0 +1,87 @@
+{
+  "name": "imovie",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "build:web": "cd packages/web && yarn build",
+    "build:server": "cd packages/server && yarn build",
+    "build:common": "cd packages/common && yarn build",
+    "start": "yarn build:common && concurrently \"yarn start:web\"",
+    "start:common": "cd packages/common && yarn start",
+    "start:web": "cd packages/web && yarn start",
+    "test": "lerna run test",
+    "test:web": "cd packages/web && yarn test",
+    "lint": "yarn lint:styles && yarn lint:ts",
+    "lint:ts": "eslint --fix packages/**/*.ts?(x)",
+    "lint:styles": "stylelint \"**/*.scss\" --syntax scss --fix",
+    "prettier": "prettier --write packages/**/*.ts?(x)",
+    "precommit": "lint-staged && yarn test",
+    "version": "lerna version --conventional-commits --yes",
+    "clean": "lerna clean --yes",
+    "generate": "graphql-codegen"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix packages/**/*.ts?(x)",
+      "prettier --write packages/**/*.ts?(x)",
+      "git add ."
+    ],
+    "*.{scss}": [
+      "stylelint \"**/*.scss\" --syntax scss --fix",
+      "git add ."
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{css}": [
+      "stylelint --fix",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.8.2",
+    "@graphql-codegen/fragment-matcher": "^1.8.2",
+    "@graphql-codegen/typescript": "^1.8.2",
+    "@graphql-codegen/typescript-operations": "^1.8.2",
+    "@graphql-codegen/typescript-react-apollo": "^1.8.2",
+    "@graphql-codegen/typescript-resolvers": "^1.8.2",
+    "@types/graphql": "^14.5.0",
+    "@types/node": "^12.11.6",
+    "@typescript-eslint/eslint-plugin": "^2.5.0",
+    "@typescript-eslint/parser": "^2.5.0",
+    "concurrently": "^5.0.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
+    "graphql": "^14.5.8",
+    "husky": "^3.0.9",
+    "lerna": "^3.18.3",
+    "lerna-changelog": "^0.8.2",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "stylelint": "11.1.1",
+    "stylelint-order": "^3.1.1",
+    "stylelint-prettier": "^1.1.1",
+    "typescript": "^3.6.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit"
+    }
+  }
+}

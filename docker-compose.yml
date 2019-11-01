@@ -1,0 +1,21 @@
+﻿version: "3.7"
+services:
+  build:
+    build:
+      context: .
+      dockerfile: ./compose/build/Dockerfile
+    image: imovie:build
+  deploy:
+    build:
+      context: .
+      dockerfile: ./compose/prod/Dockerfile
+    image: imovie:prod
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+  test:
+    build:
+      context: .
+      dockerfile: ./compose/test/Dockerfile
+    image: imovie:test
+

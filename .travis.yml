@@ -1,0 +1,41 @@
+﻿language: node
+
+sudo: required
+
+env:
+  - COMPOSE_VERSION=1.24.1
+
+before_install:
+  # Docker Compose Install
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  # Download and install Docker libs
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  # Load cached docker images
+  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+  # Travis CI has its own postgres which conflicts with docker postgres
+  - sudo service postgresql stop
+
+stages:
+  - name: test
+  - name: build
+
+jobs:
+  include:
+    - stage: test
+      before_script: docker-compose build test
+      script: docker-compose run test
+
+    - stage: build
+      before_script: docker-compose build build
+      script: docker-compose run build
+
+before_cache:
+  # Save tagged docker images
+  - >
+    mkdir -p $HOME/docker && docker images imovie -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'

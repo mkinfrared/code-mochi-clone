@@ -1,0 +1,8 @@
+﻿# Created by .ignore support plugin (hsz.mobi)
+bin
+obj
+**/node_modules
+.gradle
+build
+coverage
+docker-compose.yml

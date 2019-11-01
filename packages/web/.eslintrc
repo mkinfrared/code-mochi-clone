@@ -1,0 +1,16 @@
+{
+  "extends": ["../../.eslintrc"],
+  "rules": {
+    "no-console": "off",
+    "class-methods-use-this": "off",
+    "jsx-a11y/anchor-is-valid": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      // use <root>/tsconfig.json
+      "typescript": {
+        "directory": "./packages/web/tsconfig.json"
+      }
+    }
+  }
+}

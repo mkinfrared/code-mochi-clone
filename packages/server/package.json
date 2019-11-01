@@ -1,0 +1,43 @@
+{
+  "name": "@mochi/yoga",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "serve": "node build/server",
+    "clean": "rm -rf build",
+    "build": "yarn clean && yarn generate && yarn build:ts",
+    "build:ts": "ttsc",
+    "generate": "yarn generate:prisma && yarn generate:nexus",
+    "generate:prisma": "prisma2 generate -e ./.env",
+    "generate:nexus": "ts-node --transpile-only src/util/schema",
+    "start": "ts-node-dev --clear -C ttypescript src/server.ts",
+    "seed": "ts-node prisma/seed"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.9.7",
+    "bcryptjs": "2.4.3",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
+    "graphql": "14.5.8",
+    "graphql-shield": "5.7.3",
+    "graphql-yoga": "1.18.3",
+    "ioredis": "^4.14.1",
+    "jsonwebtoken": "8.5.1",
+    "nexus": "0.12.0-beta.14",
+    "nexus-prisma": "0.5.0"
+  },
+  "devDependencies": {
+    "@prisma/sdk": "0.0.21",
+    "@types/bcryptjs": "2.4.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/ioredis": "^4.0.18",
+    "@types/jsonwebtoken": "8.3.5",
+    "@types/node": "12.11.7",
+    "@types/ws": "6.0.3",
+    "prisma2": "2.0.0-preview015",
+    "ts-node": "8.4.1",
+    "ts-node-dev": "1.0.0-pre.43",
+    "ttypescript": "^1.5.7",
+    "typescript-transform-paths": "^1.1.11"
+  }
+}

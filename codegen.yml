@@ -1,0 +1,24 @@
+﻿﻿overwrite: true
+schema:
+  - "http://localhost:4000/graphql"
+  - "https://swapi.graph.cool/"
+documents: null
+generates:
+  packages/server/src/type/Graphql.d.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-resolvers"
+      - "fragment-matcher"
+  packages/web/src/type/Graphql.type.tsx:
+    documents:
+      - "packages/web/src/**/*.{graphql}"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+      withResultType: true
+      reactApolloVersion: 3
+watch: true
